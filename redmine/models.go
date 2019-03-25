@@ -16,9 +16,9 @@ type PostIssueRequest struct {
 }
 
 type PostIssueContent struct {
-	ProjectId   int    `json:"project_id,omitempty"`
-	TrackerId   int    `json:"tracker_id,omitempty"`
-	StatusId    int    `json:"status_id,omitempty"`
+	ProjectID   int    `json:"project_id,omitempty"`
+	TrackerID   int    `json:"tracker_id,omitempty"`
+	StatusID    int    `json:"status_id,omitempty"`
 	Subject     string `json:"subject"`
 	Description string `json:"description"`
 }
@@ -38,16 +38,16 @@ type IssuesResponse struct {
 }
 
 type Issue struct {
-	Id             int           `json:"id"`
-	Project        IdNamePair    `json:"project"`
-	Tracker        IdNamePair    `json:"tracker"`
-	Status         IdNamePair    `json:"status"`
-	Priority       IdNamePair    `json:"priority"`
-	Author         IdNamePair    `json:"author"`
-	AssignedTo     IdNamePair    `json:"assigned_to,omitempty"`
-	Category       IdNamePair    `json:"category,omitempty"`
-	FixedVersion   IdNamePair    `json:"fixed_version,omitempty"`
-	Parent         Id            `json:"parent,omitempty"`
+	ID             int           `json:"id"`
+	Project        IDNamePair    `json:"project"`
+	Tracker        IDNamePair    `json:"tracker"`
+	Status         IDNamePair    `json:"status"`
+	Priority       IDNamePair    `json:"priority"`
+	Author         IDNamePair    `json:"author"`
+	AssignedTo     IDNamePair    `json:"assigned_to,omitempty"`
+	Category       IDNamePair    `json:"category,omitempty"`
+	FixedVersion   IDNamePair    `json:"fixed_version,omitempty"`
+	Parent         ID            `json:"parent,omitempty"`
 	Subject        string        `json:"subject"`
 	Description    string        `json:"description"`
 	StartDate      string        `json:"start_date"`
@@ -61,17 +61,17 @@ type Issue struct {
 	ClosedOn       string        `json:"closed_on"`
 }
 
-type Id struct {
-	Id int `json:"id"`
+type ID struct {
+	ID int `json:"id"`
 }
 
-type IdNamePair struct {
-	Id   int    `json:"id"`
+type IDNamePair struct {
+	ID   int    `json:"id"`
 	Name string `json:"name"`
 }
 
 type CustomField struct {
-	Id    int         `json:"id"`
+	ID    int         `json:"id"`
 	Name  string      `json:"name"`
 	Value interface{} `json:"value"`
 }
