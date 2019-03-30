@@ -17,17 +17,13 @@ var (
 )
 
 func NewClient(redmineurl string, apikey string) (*Client, error) {
-	if len(redmineurl) == 0 {
-		return nil, errors.New("missing redmineurl (e.g. https://your.redmine.fqdn/)")
-	}
-
 	if len(apikey) == 0 {
 		return nil, errors.New("missing user apikey")
 	}
 
 	parsedURL, err := url.ParseRequestURI(redmineurl)
 	if err != nil {
-		return nil, errors.New("failed to parse url")
+		return nil, errors.New("failed to parse url (e.g. https://your.redmine.fqdn/)")
 	}
 
 	return &Client{
@@ -64,14 +60,13 @@ func (c *Client) GetIssues() (*IssuesResponse, error) {
 	}
 
 	res, err := c.HTTPClient.Do(req)
-	defer res.Body.Close()
-
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
-		return nil, errors.New(fmt.Sprintf("http status is not 200: status %s", res.StatusCode))
+		return nil, errors.New(fmt.Sprintf("http status is not 200: status %v", res.StatusCode))
 	}
 
 	var issues IssuesResponse
@@ -97,14 +92,13 @@ func (c *Client) CreateIssue(issue PostIssueContent) (*PostIssueResponse, error)
 	}
 
 	res, err := c.HTTPClient.Do(req)
-	defer res.Body.Close()
-
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 
 	if res.StatusCode != 201 {
-		return nil, errors.New(fmt.Sprintf("http status is not 201: status %s", res.StatusCode))
+		return nil, fmt.Errorf("http status is not 201: status %v", res.StatusCode)
 	}
 
 	var issueResponse PostIssueResponse
