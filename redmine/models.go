@@ -5,7 +5,12 @@ import (
 	"net/url"
 )
 
-type Client struct {
+type Client interface {
+	GetIssues() (*IssuesResponse, error)
+	CreateIssue(issue PostIssueContent) (*PostIssueResponse, error)
+}
+
+type client struct {
 	apikey     string
 	URL        *url.URL
 	HTTPClient *http.Client

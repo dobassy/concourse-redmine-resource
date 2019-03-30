@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/dobassy/concourse-redmine-resource/out"
+	"github.com/dobassy/concourse-redmine-resource/redmine"
 )
 
 func main() {
@@ -16,7 +17,15 @@ func main() {
 	}
 
 	//srcpath := os.Args[1]
-	response, err := out.Put(request)
+	client, err := redmine.NewClient(
+		request.Source.URI,
+		request.Source.Apikey,
+	)
+	if err != nil {
+		fatal("client initialization", err)
+	}
+
+	response, err := out.Put(client, request)
 	if err != nil {
 		fatal("running command", err)
 	}

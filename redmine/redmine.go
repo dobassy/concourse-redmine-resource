@@ -16,7 +16,7 @@ var (
 	userAgent = fmt.Sprintf("GoClient/%s", runtime.Version())
 )
 
-func NewClient(redmineurl string, apikey string) (*Client, error) {
+func NewClient(redmineurl string, apikey string) (Client, error) {
 	if len(apikey) == 0 {
 		return nil, errors.New("missing user apikey")
 	}
@@ -26,7 +26,7 @@ func NewClient(redmineurl string, apikey string) (*Client, error) {
 		return nil, errors.New("failed to parse url (e.g. https://your.redmine.fqdn/)")
 	}
 
-	return &Client{
+	return &client{
 		apikey: apikey,
 		URL:    parsedURL,
 		HTTPClient: &http.Client{
@@ -34,7 +34,7 @@ func NewClient(redmineurl string, apikey string) (*Client, error) {
 		}}, nil
 }
 
-func (c *Client) newRequest(method string, endpoint string, body io.Reader) (*http.Request, error) {
+func (c *client) newRequest(method string, endpoint string, body io.Reader) (*http.Request, error) {
 	v := url.Values{}
 	v.Add("key", c.apikey)
 
@@ -53,7 +53,7 @@ func (c *Client) newRequest(method string, endpoint string, body io.Reader) (*ht
 	return req, nil
 }
 
-func (c *Client) GetIssues() (*IssuesResponse, error) {
+func (c *client) GetIssues() (*IssuesResponse, error) {
 	req, err := c.newRequest("GET", "issues.json", nil)
 	if err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func (c *Client) GetIssues() (*IssuesResponse, error) {
 	return &issues, nil
 }
 
-func (c *Client) CreateIssue(issue PostIssueContent) (*PostIssueResponse, error) {
+func (c *client) CreateIssue(issue PostIssueContent) (*PostIssueResponse, error) {
 	issueRequest := PostIssueRequest{
 		Issue: issue,
 	}
