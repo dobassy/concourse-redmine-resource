@@ -61,7 +61,6 @@ func buildContent(request Request) (redmine.PostIssueContent, error) {
 	// request.Params.Subject is ignored if request.Params.ContentFile is passed
 	if request.Params.ContentFile != "" {
 		content, err := readContentFile(request.Params.ContentFile)
-		fmt.Printf("request.Params.ContentFile: %v", request.Params.ContentFile)
 		if err != nil {
 			return redmine.PostIssueContent{}, err
 		}
