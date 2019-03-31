@@ -1,6 +1,7 @@
 package redmine
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -16,7 +17,8 @@ var (
 	userAgent = fmt.Sprintf("GoClient/%s", runtime.Version())
 )
 
-func NewClient(redmineurl string, apikey string) (Client, error) {
+// NewClient creates Client
+func NewClient(redmineurl string, apikey string, insecure bool) (Client, error) {
 	if len(apikey) == 0 {
 		return nil, errors.New("missing user apikey")
 	}
@@ -26,12 +28,22 @@ func NewClient(redmineurl string, apikey string) (Client, error) {
 		return nil, errors.New("failed to parse url (e.g. https://your.redmine.fqdn/)")
 	}
 
+	httpclient := &http.Client{
+		Timeout: 15 * time.Second,
+	}
+
+	if insecure == true {
+		transport := &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+		httpclient.Transport = transport
+	}
+
 	return &client{
-		apikey: apikey,
-		URL:    parsedURL,
-		HTTPClient: &http.Client{
-			Timeout: 15 * time.Second,
-		}}, nil
+		apikey:     apikey,
+		URL:        parsedURL,
+		HTTPClient: httpclient,
+	}, nil
 }
 
 func (c *client) newRequest(method string, endpoint string, body io.Reader) (*http.Request, error) {

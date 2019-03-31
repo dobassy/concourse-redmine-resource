@@ -32,6 +32,7 @@ func main() {
 	client, err := redmine.NewClient(
 		request.Source.URI,
 		request.Source.Apikey,
+		request.Source.Insecure,
 	)
 	if err != nil {
 		fatal("client initialization", err)

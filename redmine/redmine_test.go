@@ -106,6 +106,7 @@ func TestNewClient(t *testing.T) {
 		client, _ := NewClient(
 			"",
 			"dummyapikey",
+			false,
 		)
 
 		if client != nil {
@@ -117,6 +118,7 @@ func TestNewClient(t *testing.T) {
 		client, _ := NewClient(
 			"http://localhost",
 			"",
+			false,
 		)
 
 		if client != nil {
@@ -138,6 +140,7 @@ func TestGetIssues(t *testing.T) {
 		client, err := NewClient(
 			h.URL,
 			"dummyapikey",
+			false,
 		)
 
 		if err != nil {
@@ -171,6 +174,7 @@ func TestGetIssues(t *testing.T) {
 		client, err := NewClient(
 			h.URL,
 			"dummyapikey",
+			false,
 		)
 
 		_, err = client.GetIssues()
@@ -202,6 +206,7 @@ func TestCreateIssue(t *testing.T) {
 		client, _ := NewClient(
 			h.URL,
 			"dummyapikey",
+			false,
 		)
 		res, _ := client.CreateIssue(issue)
 
@@ -230,6 +235,7 @@ func TestCreateIssue(t *testing.T) {
 		client, _ := NewClient(
 			h.URL,
 			"dummyapikey",
+			false,
 		)
 		_, err := client.CreateIssue(issue)
 
