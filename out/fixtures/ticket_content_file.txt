@@ -1,0 +1,6 @@
+First line is the subject text
+Second and subsequent lines will be a description of the issue.
+
+It does not matter if you open the space.
+
+Have a good Redmine life!!

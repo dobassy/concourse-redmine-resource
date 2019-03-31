@@ -14,22 +14,9 @@ import (
 // Put is the main logic in the OUT resouce
 func Put(client redmine.Client, request Request) (Response, error) {
 
-	postIssueContent := redmine.PostIssueContent{
-		Subject:     request.Params.Subject,
-		ProjectID:   request.Params.ProjectID,
-		TrackerID:   request.Params.TrackerID,
-		StatusID:    request.Params.StatusID,
-		Description: "",
-	}
-
-	// request.Params.Subject is ignored if request.Params.ContentFile is passed
-	if request.Params.ContentFile != "" {
-		content, err := readContentFile(request.Params.ContentFile)
-		if err != nil {
-			return Response{}, err
-		}
-		postIssueContent.Subject = content["subject"]
-		postIssueContent.Description = content["description"]
+	postIssueContent, err := buildContent(request)
+	if err != nil {
+		return Response{}, err
 	}
 
 	issue, err := client.CreateIssue(postIssueContent)
@@ -62,8 +49,32 @@ func Put(client redmine.Client, request Request) (Response, error) {
 	}, nil
 }
 
+func buildContent(request Request) (redmine.PostIssueContent, error) {
+	issueContent := redmine.PostIssueContent{
+		Subject:     request.Params.Subject,
+		ProjectID:   request.Params.ProjectID,
+		TrackerID:   request.Params.TrackerID,
+		StatusID:    request.Params.StatusID,
+		Description: "",
+	}
+
+	// request.Params.Subject is ignored if request.Params.ContentFile is passed
+	if request.Params.ContentFile != "" {
+		content, err := readContentFile(request.Params.ContentFile)
+		fmt.Printf("request.Params.ContentFile: %v", request.Params.ContentFile)
+		if err != nil {
+			return redmine.PostIssueContent{}, err
+		}
+		issueContent.Subject = content["subject"]
+		issueContent.Description = content["description"]
+	}
+
+	return issueContent, nil
+}
+
 func readContentFile(path string) (map[string]string, error) {
 	file, err := os.Open(path)
+
 	if err != nil {
 		return map[string]string{}, err
 	}
