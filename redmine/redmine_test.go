@@ -208,7 +208,6 @@ func TestCreateIssue(t *testing.T) {
 		var expect interface{}
 
 		expect = 11
-		fmt.Printf("got response: %+v", res)
 		if got := res.Issue.ID; got != expect {
 			t.Fatalf("assert failed: ID got = %v, but want: %v", got, expect)
 		}

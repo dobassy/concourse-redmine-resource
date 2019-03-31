@@ -60,6 +60,8 @@ func buildContent(request Request) (redmine.PostIssueContent, error) {
 
 	// request.Params.Subject is ignored if request.Params.ContentFile is passed
 	if request.Params.ContentFile != "" {
+		fmt.Fprintln(os.Stderr, "[INFO] Parameter \"content_file\" is defined. Attempt to read this file.")
+
 		content, err := readContentFile(request.Params.ContentFile)
 		if err != nil {
 			return redmine.PostIssueContent{}, err
