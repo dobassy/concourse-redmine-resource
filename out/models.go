@@ -11,10 +11,11 @@ type Request struct {
 }
 
 type Params struct {
-	Subject   string `json:"subject"`
-	ProjectID int    `json:"project_id"`
-	TrackerID int    `json:"tracker_id"`
-	StatusID  int    `json:"status_id"`
+	Subject     string `json:"subject"`
+	ProjectID   int    `json:"project_id"`
+	TrackerID   int    `json:"tracker_id"`
+	StatusID    int    `json:"status_id"`
+	ContentFile string `json:"content_file"`
 }
 
 type Response struct {
